@@ -1,0 +1,139 @@
+# Flow specification version
+version: "0.1.0"
+
+# Flow metadata and configuration
+metadata:
+  flow_type: "compound"
+  name: "html-code-generator"
+  description: "Generates a complete HTML code for a website using Tailwind CSS based on user inputs."
+  author: "shankar"
+  tags: [html, tailwind, web-development, code-generation]
+  private: false
+
+# Primary input definitions
+inputs:
+  purpose:
+    type: string
+    description: "The purpose of the website (e.g., fitness, portfolio, blog)."
+    required: true
+    example: "fitness"
+  color_combination:
+    type: string
+    description: "The color combination for the website (e.g., blue and white)."
+    required: true
+    example: "blue and white"
+  design:
+    type: string
+    description: "The design style of the website (e.g., modern, minimalist)."
+    required: true
+    example: "modern"
+  additional_features:
+    type: string
+    description: "Additional features to include (e.g., contact form, gallery)."
+    required: false
+    example: "contact form"
+
+# Workflow definition
+workflow:
+  # First Flow: Validate and preprocess inputs
+  validate_inputs:
+    type: "custom"
+    inputs:
+      purpose: ${inputs.purpose}
+      color_combination: ${inputs.color_combination}
+      design: ${inputs.design}
+      additional_features: ${inputs.additional_features}
+    model:
+      provider: "anthropic"
+      name: "claude-3.5-sonnet"
+    prompt: |
+      Validate the following inputs for generating an HTML website:
+      - Purpose: {purpose}
+      - Color Combination: {color_combination}
+      - Design Style: {design}
+      - Additional Features: {additional_features}
+
+      Ensure all required inputs are present and valid. If any input is missing or invalid, return an error message. Otherwise, return the inputs as-is.
+
+  # Second Flow: Generate HTML code using Tailwind CSS
+  generate_html:
+    type: "custom"
+    depends_on: [validate_inputs]
+    inputs:
+      purpose: ${validate_inputs.output}
+      color_combination: ${validate_inputs.output}
+      design: ${validate_inputs.output}
+      additional_features: ${validate_inputs.output}
+    model:
+      provider: "anthropic"
+      name: "claude-3.5-sonnet"
+    prompt: |
+      You are an expert web developer specializing in HTML and Tailwind CSS. Your task is to generate a complete HTML code for a website based on the following inputs:
+
+      1. **Purpose**: {purpose}
+      2. **Color Combination**: {color_combination}
+      3. **Design Style**: {design}
+      4. **Additional Features**: {additional_features}
+
+      ### Instructions:
+      - Generate a well-structured HTML5 document.
+      - Use Tailwind CSS for styling. Include the Tailwind CSS CDN link in the `<head>`.
+      - Use semantic HTML elements (e.g., `<header>`, `<main>`, `<section>`, `<footer>`).
+      - Include placeholders for dynamic content where necessary.
+      - Add comments in the code to explain the structure and styling choices.
+      - If additional features are provided, ensure they are integrated into the HTML structure.
+      - The output should ONLY contain the HTML code. Do not include any explanatory text like "Here's a code" strictly.
+
+  # Third Flow: Format and finalize the output
+  format_output:
+    type: "custom"
+    depends_on: [generate_html]
+    inputs:
+      html_code: ${generate_html.output}
+    model:
+      provider: "anthropic"
+      name: "claude-3.5-sonnet"
+    prompt: |
+      Format the following HTML code to ensure it is clean, readable, and properly indented:
+
+      {html_code}
+
+      Remove any unnecessary comments or placeholders. Ensure the code is ready for production use.
+
+# Output configuration
+output:
+  value:
+    - ${validate_inputs.output}
+    - ${generate_html.output}
+    - ${format_output.output}
+
+# Flow documentation
+readme: |
+  # HTML Code Generator Compound Flow
+
+  This compound flow generates a complete HTML code for a website using Tailwind CSS based on user inputs.
+
+  ### Workflow Overview:
+  1. **Validate Inputs**: Ensures all required inputs are present and valid.
+  2. **Generate HTML**: Creates a well-structured HTML document using Tailwind CSS.
+  3. **Format Output**: Cleans and formats the HTML code for production use.
+
+  ### Inputs:
+  - **Purpose**: The purpose of the website (e.g., fitness, portfolio, blog).
+  - **Color Combination**: The color combination for the website (e.g., blue and white).
+  - **Design Style**: The design style of the website (e.g., modern, minimalist).
+  - **Additional Features**: Additional features to include (e.g., contact form, gallery).
+
+  ### Outputs:
+  - **Validated Inputs**: The validated and preprocessed inputs.
+  - **Generated HTML**: The complete HTML code for the website.
+  - **Formatted HTML**: The cleaned and formatted HTML code ready for use.
+
+  ### Example Input:
+  ```json
+  {
+    "purpose": "fitness",
+    "color_combination": "blue and white",
+    "design": "modern",
+    "additional_features": "contact form"
+  }
