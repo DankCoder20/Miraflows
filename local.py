@@ -3,21 +3,16 @@ from flask_cors import CORS  # Import CORS
 from mira_sdk import MiraClient, CompoundFlow
 from mira_sdk.exceptions import FlowError
 
-# Initialize Flask app
-app = Flask(__name__)  # Use double underscores: __name__
+app = Flask(__name__)
 
-# Enable CORS for all routes
-CORS(app)  # Allow all origins
+CORS(app)
 
-# Initialize Mira Client
-client = MiraClient(config={"API_KEY": "YOUR_API_KEY"})
+client = MiraClient(config={"API_KEY": "sb-415e643939543e5d2e57067df4149efb"})
 
-# Load the compound flow configuration
-flow = CompoundFlow(source="flow.yaml")  
+flow = CompoundFlow(source="flow.yaml")
 
 @app.route('/submit', methods=['POST'])
 def generate_website():
-    # Parse the JSON payload from the frontend
     data = request.json
     test_input = {
         "purpose": data.get("purpose", ""),
@@ -27,8 +22,12 @@ def generate_website():
     }
 
     try:
-        # Test the pipeline
+        
         response = client.flow.test(flow, test_input)
+        print("Mira API Response:", response)  
+
+        if response is None:
+            raise FlowError("Mira API returned no response.")
 
         validated_inputs = response.get("validate_inputs", "")
         generated_html = response.get("generate_html", "")
@@ -48,10 +47,12 @@ def generate_website():
         })
 
     except FlowError as e:
-        # Handle test failure
+        print("FlowError:", str(e)) 
         return jsonify({"success": False, "error": str(e)}), 500
+    except Exception as e:
+        print("Unexpected Error:", str(e))  
+        return jsonify({"success": False, "error": "An unexpected error occurred."}), 500
 
 
-# Run the Flask app
-if __name__ == '__main__':  # Use double underscores: __name__
+if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
