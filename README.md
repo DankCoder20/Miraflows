@@ -22,7 +22,7 @@ This project allows you to generate a custom website by providing inputs such as
 
 Before running the project, ensure you have the following installed:
 
-- **Python 3.x**
+- **Python >=3.10**
 - **Flask** (`pip install flask`)
 - **Flask-CORS** (`pip install flask-cors`)
 - **Mira SDK** (`pip install mira-sdk`)
