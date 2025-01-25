@@ -5,26 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Website Generator</title>
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <!-- Add SweetAlert CSS and JS -->
+  
   <script src="https://cdn.tailwindcss.com">
     document.getElementById('input-form').addEventListener('submit', async (e) => {
       e.preventDefault();
   
-      // Show loading spinner
+    
       const submitButton = document.querySelector('button[type="submit"]');
       submitButton.disabled = true;
       submitButton.innerHTML = `
         <div class="loader"></div>
       `;
   
-      // Collecting form data
+     
       const purpose = document.getElementById('purpose').value;
       const colorCombination = document.getElementById('color-combination').value;
       const design = document.getElementById('design').value;
       const additionalFeatures = document.getElementById('additional-features').value;
   
-      // Creating the data in the required format
+     
       const test_input = {
         purpose: purpose,
         color_combination: colorCombination,
@@ -33,7 +32,7 @@
       };
   
       try {
-        // Sending the POST request
+        
         const response = await fetch('http://127.0.0.1:5000/submit', {
           method: 'POST',
           headers: {
@@ -44,12 +43,12 @@
   
         const result = await response.json();
   
-        // Hide loading spinner
+      
         submitButton.disabled = false;
         submitButton.innerHTML = 'Generate Website';
   
         if (result.success) {
-          // Show success message with SweetAlert
+        
           Swal.fire({
             title: 'Success!',
             text: 'Website Generated Successfully!',
@@ -57,12 +56,12 @@
             confirmButtonText: 'OK'
           });
   
-          // Open the generated HTML in a new tab (optional)
+         
           const blob = new Blob([result.formatted_html], { type: 'text/html' });
           const url = URL.createObjectURL(blob);
           window.open(url, '_blank');
         } else {
-          // Show error message with SweetAlert
+          
           Swal.fire({
             title: 'Error!',
             text: 'Failed to generate website: ' + result.error,
@@ -71,11 +70,11 @@
           });
         }
       } catch (error) {
-        // Hide loading spinner
+        
         submitButton.disabled = false;
         submitButton.innerHTML = 'Generate Website';
   
-        // Show error message with SweetAlert
+      
         Swal.fire({
           title: 'Error!',
           text: 'There was an issue generating the website.',
@@ -89,7 +88,7 @@
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Add Loading Spinner CSS -->
+ 
   <style>
     .loader {
       border: 4px solid #f3f3f3;
@@ -110,7 +109,7 @@
 
 <body class="bg-gray-50 text-gray-800">
 
-  <!-- Header -->
+  
   <header class="bg-blue-600 text-white p-6 shadow-md">
     <div class="container mx-auto text-center">
       <h1 class="text-3xl font-bold">Website Generator</h1>
@@ -118,24 +117,24 @@
     </div>
   </header>
 
-  <!-- Main Section -->
+  
   <main class="container mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
     <h2 class="text-2xl font-semibold text-center mb-6">Provide Your Preferences</h2>
 
     <form id="input-form" class="space-y-6">
-      <!-- Purpose -->
+    
       <div>
         <label for="purpose" class="block text-lg font-medium">Purpose</label>
         <textarea id="purpose" name="purpose" rows="3" placeholder="E.g., Food Delivery, Portfolio..." class="w-full mt-2 p-3 border rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
       </div>
 
-      <!-- Color Combination -->
+      
       <div>
         <label for="color-combination" class="block text-lg font-medium">Color Combination</label>
         <input id="color-combination" name="color-combination" type="text" placeholder="E.g., Blue and White, Black and Gold..." class="w-full mt-2 p-3 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
       </div>
 
-      <!-- Design Style -->
+     
       <div>
         <label for="design" class="block text-lg font-medium">Design Style</label>
         <select id="design" name="design" class="w-full mt-2 p-3 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -147,20 +146,20 @@
         </select>
       </div>
 
-      <!-- Additional Features -->
+      
       <div>
         <label for="additional-features" class="block text-lg font-medium">Additional Features</label>
         <textarea id="additional-features" name="additional-features" rows="3" placeholder="E.g., Dynamic content, Contact form..." class="w-full mt-2 p-3 border rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
       </div>
 
-      <!-- Submit Button -->
+     
       <div class="text-center">
         <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">Generate Website</button>
       </div>
     </form>
   </main>
 
-  <!-- Footer -->
+
   <footer class="bg-blue-600 text-white mt-8 p-4 text-center">
     <p>&copy; 2025 Website Generator. All rights reserved.</p>
   </footer>
@@ -169,20 +168,20 @@
     document.getElementById('input-form').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Show loading spinner
+      
       const submitButton = document.querySelector('button[type="submit"]');
       submitButton.disabled = true;
       submitButton.innerHTML = `
         <div class="loader"></div>
       `;
 
-      // Collecting form data
+     
       const purpose = document.getElementById('purpose').value;
       const colorCombination = document.getElementById('color-combination').value;
       const design = document.getElementById('design').value;
       const additionalFeatures = document.getElementById('additional-features').value;
 
-      // Creating the data in the required format
+
       const test_input = {
         purpose: purpose,
         color_combination: colorCombination,
@@ -191,7 +190,7 @@
       };
 
       try {
-        // Sending the POST request
+      
         const response = await fetch('http://127.0.0.1:5000/submit', {
           method: 'POST',
           headers: {
@@ -202,12 +201,12 @@
 
         const result = await response.json();
 
-        // Hide loading spinner
+       
         submitButton.disabled = false;
         submitButton.innerHTML = 'Generate Website';
 
         if (result.success) {
-          // Show success message with SweetAlert
+         
           Swal.fire({
             title: 'Success!',
             text: 'Website Generated Successfully!',
@@ -215,12 +214,12 @@
             confirmButtonText: 'OK'
           });
 
-          // Open the generated HTML in a new tab (optional)
+          
           const blob = new Blob([result.formatted_html], { type: 'text/html' });
           const url = URL.createObjectURL(blob);
           window.open(url, '_blank');
         } else {
-          // Show error message with SweetAlert
+        
           Swal.fire({
             title: 'Error!',
             text: 'Failed to generate website: ' + result.error,
@@ -229,11 +228,11 @@
           });
         }
       } catch (error) {
-        // Hide loading spinner
+       
         submitButton.disabled = false;
         submitButton.innerHTML = 'Generate Website';
 
-        // Show error message with SweetAlert
+     
         Swal.fire({
           title: 'Error!',
           text: 'There was an issue generating the website.',
